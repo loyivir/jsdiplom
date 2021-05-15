@@ -841,6 +841,7 @@ hr.white {
 .top-slider .slick-dots {
 	position: absolute;
 	bottom: 25px;
+	z-index: 20;
 }
 .top-slider .slick-dots li {
 	border-color: #fff !important;
@@ -856,6 +857,10 @@ hr.white {
 	overflow: hidden;
 	height: 450px;
 	position: relative;
+  display: none;
+}
+.top-slider .item-active {
+	display: block;
 }
 .top-slider .item:before {
 	content: "";
