@@ -1,4 +1,3 @@
-import modalCallback from './modalCallback';
 const carousel = () => {
   const getNumberOfVisibleItems = () => {
     if (screen.width < 768) {
