@@ -1,32 +1,35 @@
 //popup
+const showModal = (modal) => {
+  if (screen.width < 768) {
+    modal.style.opacity = '100%';
+    modal.style.display = 'block';
+    return;
+  }
+  const start = Date.now();
+  modal.style.display = 'block';
+  const requestId = setInterval(() => {
+    const timePassed = Date.now() - start;
+    modal.style.opacity = `${(timePassed / 3).toFixed(0)}%`;
+    if (timePassed >= 1000) {
+      clearInterval(requestId);
+      return;
+    }
+  }, 10);
+};
+const hideModal = (modal) => {
+  modal.style.display = 'none';
+  modal.style.opacity = '0%';
+};
 const modalCallback = () => {
   const popup = document.querySelector('.modal-callback');
   const overlay = document.querySelector('.modal-overlay');
+
   popup.style.opacity = '0%';
   overlay.style.opacity = '0%';
-  const hideModal = (modal) => {
-    modal.style.display = 'none';
-    modal.style.opacity = '0%';
-  };
+
   hideModal(popup);
   hideModal(overlay);
-  const showModal = (modal) => {
-    if (screen.width < 768) {
-      modal.style.opacity = '100%';
-      modal.style.display = 'block';
-      return;
-    }
-    const start = Date.now();
-    modal.style.display = 'block';
-    const requestId = setInterval(() => {
-      const timePassed = Date.now() - start;
-      modal.style.opacity = `${(timePassed / 3).toFixed(0)}%`;
-      if (timePassed >= 1000) {
-        clearInterval(requestId);
-        return;
-      }
-    }, 10);
-  };
+
   document.addEventListener('click', (event) => {
     let target = event.target;
 
@@ -45,5 +48,4 @@ const modalCallback = () => {
     }
   });
 };
-
-export default modalCallback;
+export { showModal, hideModal, modalCallback };
