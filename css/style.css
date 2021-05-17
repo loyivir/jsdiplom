@@ -1144,7 +1144,7 @@ video#video_background {
 	-o-transition: all 200ms ease-out;
 	transition: all 200ms ease-out;
 	margin-top: -24px;
-	z-index: 2;
+	z-index: 20;
 	opacity: 0;
 	color: #fff;
 	padding: 10px 0;

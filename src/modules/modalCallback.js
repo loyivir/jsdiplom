@@ -29,7 +29,11 @@ const modalCallback = () => {
   };
   document.addEventListener('click', (event) => {
     let target = event.target;
+
     if (target.classList.contains('callback-btn') || target.classList.contains('button-services')) {
+      showModal(popup);
+      showModal(overlay);
+    } else if (window.getComputedStyle(target, ':before').content === '"Оформить заявку"') {
       showModal(popup);
       showModal(overlay);
     } else if (target.closest('.modal-close')) {
