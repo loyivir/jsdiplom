@@ -4,7 +4,8 @@ const sendForm = () => {
   const overlay = document.querySelector('.modal-overlay');
   const errorMessage = 'Что-то пошло не так...',
     successMessage = 'Спасибо! мы скоро с вами свяжемся!',
-    invalidData = 'Введите данные правильно!';
+    invalidData = 'Введите данные правильно!',
+    progressMessage = 'Отправка сообщения...';
   const form1 = document.querySelector('.rf > form');
 
   const statusMessage = document.createElement('div');
@@ -65,52 +66,51 @@ const sendForm = () => {
     for (const val of formData.entries()) {
       body[val[0]] = val[1];
     }
+    form.reset();
+    setTimeout(() => {
+      const target = form.closest('.modal-callback');
+
+      if (target) {
+        hideModal(target);
+        popup.querySelector('.modal-content').textContent = progressMessage;
+        popup.querySelector('.fancyClose').style.display = 'none';
+        showModal(popup);
+      }
+    }, 1000);
     postData(body)
       .then((response) => {
         if (response.status !== 200) {
           throw new Error('status network not 200');
         }
         statusMessage.textContent = successMessage;
-        form.reset();
-        setTimeout(() => {
-          const target = form.closest('.modal-callback');
 
-          if (target) {
-            hideModal(target);
-            popup.querySelector('.modal-content').textContent = successMessage;
-            showModal(popup);
+        setTimeout(() => {
+          if (popup.style.display === 'block') {
+            hideModal(popup);
+            popup.querySelector('.fancyClose').style.display = 'inline-block';
           }
+          popup.querySelector('.modal-content').textContent = successMessage;
+          showModal(popup);
+          showModal(overlay);
         }, 1000);
       })
       .catch((error) => {
         console.error(error);
-        form.reset();
+
         setTimeout(() => {
-          const target = form.closest('.modal-callback');
-
-          if (target) {
-            hideModal(target);
-
-            popup.querySelector('.modal-content').textContent = errorMessage;
-            showModal(popup);
+          if (popup.style.display === 'block') {
+            hideModal(popup);
+            popup.querySelector('.fancyClose').style.display = 'inline-block';
           }
+          popup.querySelector('.modal-content').textContent = errorMessage;
+          showModal(popup);
+          showModal(overlay);
         }, 1000);
       });
   };
   form1.addEventListener('submit', (event) => {
     event.preventDefault();
     submitForm(form1);
-  });
-  document.addEventListener('click', (event) => {
-    let target = event.target;
-
-    if (target.classList.contains('fancyClose') || target.closest('.fancyClose')) {
-      hideModal(popup);
-      hideModal(overlay);
-    } else if (!target.closest('#responseMessage')) {
-      hideModal(popup);
-      hideModal(overlay);
-    }
   });
 };
 
